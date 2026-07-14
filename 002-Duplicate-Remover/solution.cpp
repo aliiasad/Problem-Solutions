@@ -12,28 +12,6 @@ int len(const char*);
 char* cpy(const char*, char*);
 bool cmp(const char*, const char*);
 
-// only for testing
-int main()  {
-    int keywordCount = 0;
-    
-    std::cout << "Enter paragraph (type 'END' to finish):\n";
-    char* paragraph = readParagraph();
-    
-    std::cout << "\nEnter keywords (type 'END' to finish):\n";
-    char** keywords = readKeywords(keywordCount);
-    
-    std::cout << "\n--- Original Paragraph ---\n";
-    displayParagraph(paragraph);
-    
-    removeDuplicateKeywords(paragraph, keywords, keywordCount);
-    
-    std::cout << "\n--- Processed Paragraph (Duplicates Removed) ---\n";
-    displayParagraph(paragraph);
-    
-    deallocateMemory(paragraph, keywords, keywordCount);
-    return 0;
-}
-
 // implementation of helper functions
 
 int len(const char* str)    {
@@ -107,7 +85,7 @@ char* readParagraph()   {
     paragraph[counter] = '\0';
 
     char* exactSize = new char [counter + 1];
-    cpy(paragraph, exactSize); // Fixed: Destination is exactSize, Source is paragraph
+    cpy(paragraph, exactSize); 
     delete[] paragraph;
 
     paragraph = exactSize;
@@ -115,13 +93,13 @@ char* readParagraph()   {
 }
 
 char** readKeywords(int& keywordCount)  {
-    int size = 10; // Fixed: start size greater than 0
+    int size = 10; 
     
     char** keywords = new char* [size];
     char temp[5001];
 
     while (std::cin >> temp)    {
-        if (cmp(temp, "END")) // Handled termination for keywords
+        if (cmp(temp, "END")) 
             break;
 
         if (keywordCount >= size)   {
@@ -136,19 +114,19 @@ char** readKeywords(int& keywordCount)  {
         }
 
         keywords[keywordCount] = new char [len(temp) + 1];
-        cpy(temp, keywords[keywordCount]); // Fixed: Destination is keywords[keywordCount], Source is temp
+        cpy(temp, keywords[keywordCount]); 
         keywordCount++;
     }
     
-    // Copy to exact sized dynamic array to prevent unused pointer slots
+
     char** exactSize = new char* [keywordCount];
     for (int i = 0; i < keywordCount; i++) {
         exactSize[i] = new char[len(keywords[i]) + 1];
         cpy(keywords[i], exactSize[i]);
-        delete[] keywords[i]; // Delete elements of the old temporarily oversized structure
+        delete[] keywords[i]; 
     }
     
-    delete[] keywords; // Fixed: Use delete[] instead of delete
+    delete[] keywords; 
     keywords = exactSize;
     return keywords;
 }
@@ -158,7 +136,7 @@ void removeDuplicateKeywords(char*& paragraph, char** keywords, int keywordCount
         int j = 0;
         bool firstFound = false;
 
-        while (paragraph[j] != '\0')    { // Fixed: Check for null terminator instead of '0'
+        while (paragraph[j] != '\0')    { 
             int wordStart = j;
             char buffer[5001];
             int k = 0;
@@ -181,12 +159,12 @@ void removeDuplicateKeywords(char*& paragraph, char** keywords, int keywordCount
                 
                 // shifting over the duplicate word
                 while (paragraph[wordEnd] != '\0')  {
-                    paragraph[startBuffer] = paragraph[wordEnd]; // Fixed: Use startBuffer instead of wordStart
+                    paragraph[startBuffer] = paragraph[wordEnd]; 
                     startBuffer++;
                     wordEnd++;
                 }
                 paragraph[startBuffer] = '\0';
-                j = wordStart; // Reset reading index to where the word was removed
+                j = wordStart; 
             }
             else {
                 if (paragraph[j] == ' ')
