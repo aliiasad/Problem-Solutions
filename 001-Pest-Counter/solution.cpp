@@ -19,17 +19,21 @@ int** getpestCount(int topLeftX, int topLeftY, int p_count[][10])  {
             int y = topLeftY - i;
 
             // if the coordinates are both positive, put in Q1 --> row 0
-            if (x >= 0 && y > 0) temp1[idx1++] = p_count[i][j];
+            if (x >= 0 && y > 0) 
+                temp1[idx1++] = p_count[i][j];
 
             // if coordinates are negative and positive, put in Q2 --> row 1
-            else if (x < 0 && y > 0) temp2[idx2++] = p_count[i][j];
+            else if (x < 0 && y > 0) 
+                temp2[idx2++] = p_count[i][j];
 
             // if  coordinates are negative and negative, put in Q3 --> row 2
-            // also since example (pest.png) includes origin points in Q3 --> <= & >=
-            else if (x < 0 && y <= 0) temp3[idx3++] = p_count[i][j];
+            else if (x < 0 && y <= 0) 
+                temp3[idx3++] = p_count[i][j];
 
-            // if  coordinates are positive and negative, put in Q3 --> row 3
-            else if (x >= 0 && y <= 0) temp4[idx4++] = p_count[i][j];
+            // if  coordinates are positive and negative, put in Q4 --> row 3
+            // also since example (pest.png) includes origin points in Q4 --> <= & >=
+            else if (x >= 0 && y <= 0) 
+                temp4[idx4++] = p_count[i][j];
         }
     }
 
