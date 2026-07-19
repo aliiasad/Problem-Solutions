@@ -49,6 +49,13 @@ char* extractWord(char* sentence, int startIndex, int& endIndex)   {
     }
     extractedWord[counter] = '\0';
     endIndex = i;
+
+    // trim extra space
+    char* exactSize = new char [counter + 1];
+    for (int i = 0; i <= counter; i ++)
+        exactSize[i] = extractedWord[i];
+    delete[] extractedWord;
+    extractedWord = exactSize;
     return extractedWord;
 }
 
