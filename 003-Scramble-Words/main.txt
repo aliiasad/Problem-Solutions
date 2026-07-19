@@ -1,0 +1,96 @@
+// this is an AI generated main only for testing purposes
+
+#include <iostream>
+int main()  {
+    // Test 1: word appears once (the example from the question)
+    {
+        char sentence[] = "National University of Computer and Emerging Sciences";
+        char targetWord[] = "Computer";
+        std::cout << "Test 1 - single occurrence" << std::endl;
+        std::cout << "Before: " << sentence << std::endl;
+        scrambleWord(sentence, targetWord);
+        std::cout << "After:  " << sentence << std::endl << std::endl;
+    }
+
+    // Test 2: word appears multiple times
+    {
+        char sentence[] = "the cat sat near the mat with the hat";
+        char targetWord[] = "the";
+        std::cout << "Test 2 - multiple occurrences of 'the'" << std::endl;
+        std::cout << "Before: " << sentence << std::endl;
+        scrambleWord(sentence, targetWord);
+        std::cout << "After:  " << sentence << std::endl << std::endl;
+    }
+
+    // Test 3: target word not present at all
+    {
+        char sentence[] = "This sentence has no match at all";
+        char targetWord[] = "xyz";
+        std::cout << "Test 3 - word not found" << std::endl;
+        std::cout << "Before: " << sentence << std::endl;
+        scrambleWord(sentence, targetWord);
+        std::cout << "After:  " << sentence << std::endl << std::endl;
+    }
+
+    // Test 4: target word is the last word, no trailing space
+    {
+        char sentence[] = "Look at the Computer";
+        char targetWord[] = "Computer";
+        std::cout << "Test 4 - target word at the very end (no trailing space)" << std::endl;
+        std::cout << "Before: " << sentence << std::endl;
+        scrambleWord(sentence, targetWord);
+        std::cout << "After:  " << sentence << std::endl << std::endl;
+    }
+
+    // Test 5: target word is the first word
+    {
+        char sentence[] = "Computer science is fun";
+        char targetWord[] = "Computer";
+        std::cout << "Test 5 - target word at the very start" << std::endl;
+        std::cout << "Before: " << sentence << std::endl;
+        scrambleWord(sentence, targetWord);
+        std::cout << "After:  " << sentence << std::endl << std::endl;
+    }
+
+    // Test 6: case-insensitive match check
+    {
+        char sentence[] = "My COMPUTER is fast";
+        char targetWord[] = "computer";
+        std::cout << "Test 6 - case-insensitive match (COMPUTER vs computer)" << std::endl;
+        std::cout << "Before: " << sentence << std::endl;
+        scrambleWord(sentence, targetWord);
+        std::cout << "After:  " << sentence << std::endl << std::endl;
+    }
+
+    // Test 7: single-letter word
+    {
+        char sentence[] = "I am a programmer";
+        char targetWord[] = "a";
+        std::cout << "Test 7 - single character target word" << std::endl;
+        std::cout << "Before: " << sentence << std::endl;
+        scrambleWord(sentence, targetWord);
+        std::cout << "After:  " << sentence << std::endl << std::endl;
+    }
+
+    // Test 8: double space between words
+    {
+        char sentence[] = "hello  Computer world";
+        char targetWord[] = "Computer";
+        std::cout << "Test 8 - double space before target word" << std::endl;
+        std::cout << "Before: [" << sentence << "]" << std::endl;
+        scrambleWord(sentence, targetWord);
+        std::cout << "After:  [" << sentence << "]" << std::endl << std::endl;
+    }
+
+    // Test 9: trailing space at end of sentence
+    {
+        char sentence[] = "hello Computer world ";
+        char targetWord[] = "world";
+        std::cout << "Test 9 - trailing space at end of sentence" << std::endl;
+        std::cout << "Before: [" << sentence << "]" << std::endl;
+        scrambleWord(sentence, targetWord);
+        std::cout << "After:  [" << sentence << "]" << std::endl << std::endl;
+    }
+
+    return 0;
+}
