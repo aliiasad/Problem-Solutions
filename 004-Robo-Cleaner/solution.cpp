@@ -10,34 +10,15 @@ void seeCarpet(char carpet[][8], int robotRow, int robotCol);
 #include <iostream>
 #include <fstream>
 
-// ai generated main
 int main()  {
-    // Runs 3 test cases: center, top-left corner, bottom-right corner.
-    // Carpet is re-read fresh from file each time so previous '*' marks
-    // don't leak into the next test.
-    int numTests = 3;
+    char carpet[8][8];
+    int row, col;
 
-    for (int t = 0; t < numTests; t++) {
-        char carpet[8][8];
-        int row, col;
-
-        std::cout << "===== Test " << (t + 1) << " =====" << std::endl;
-
-        readInput(carpet);
-
-        std::cout << "Carpet before marking robot:" << std::endl;
-        displayGrid(carpet);
-
-        getRobotPosition(row, col);
-        markRobot(carpet, row, col);
-
-        std::cout << "Carpet after marking robot:" << std::endl;
-        displayGrid(carpet);
-
-        seeCarpet(carpet, row - 1, col - 1);
-
-        std::cout << std::endl;
-    }
+    readInput(carpet);
+    getRobotPosition(row, col);
+    markRobot(carpet, row, col);
+    displayGrid(carpet);
+    seeCarpet(carpet, row - 1, col - 1);
 
     return 0;
 }
