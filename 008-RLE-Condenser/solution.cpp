@@ -8,7 +8,8 @@
 
 #include <iostream>
 
-
+char* getSentence();
+char* getTarget();
 int length(char* str);
 char* extractWord(char* sentence, int startIndex, int& endIndex);
 bool compare(char* str1, char* str2);
@@ -16,6 +17,7 @@ void writeBack(char*& sentence, char* targetWord, char* condensedWord,
                 int start, int end);
 char* condense(char* word);
 void condenseWord(char*& sentence, char* targetWord);
+void trimToExact(char*& sentence, int counter);
 
 int main()  {
     char* rawSentence = "The word MISSISSIPPI is long";
@@ -29,6 +31,59 @@ int main()  {
     condenseWord(sentence, word);
     std::cout << sentence;
     return 0;
+}
+
+void trimToExact(char*& sentence, int counter)  {
+    char* exactSize = new char [counter + 1];
+    for (int j = 0; j <= counter; j++)
+        exactSize[j] = sentence[j];
+    delete[] sentence;
+    sentence = exactSize;
+}
+
+char* getSentence() {
+    std::cout << "Enter your Sentence (Type \"STOP\" at the end): " << std::endl;
+    char buffer[5001];
+    int counter = 0, size = 20;
+    char* sentence = new char [size];
+    sentence[0] = '\0';
+
+    // general lambda to be reused
+    auto ensureCapacity = [&](int spaceNeeded) {
+        if (counter + spaceNeeded >= size)  {
+            while (counter + spaceNeeded >= size)    {
+                size *= 2;  // product until the word fits in size
+            }
+                char* newSentence = new char [size];
+                for (int k = 0; k < counter; k++)
+                    newSentence[k] = sentence[k];
+                delete[] sentence;
+                sentence = newSentence;
+        }
+    };
+
+    while (std::cin >> buffer)    {
+        if (compare(buffer, "STOP"))
+            break;
+
+        // check space and growo once
+        int spaceNeeded = ((counter > 0) ? 1 : 0) + length(buffer) + 1; // counter > 0 means space present
+        ensureCapacity(spaceNeeded);
+
+        // to handle space cases
+        if (counter > 0)
+            sentence[counter++] = ' ';
+        
+        // copy temp into sentence
+        int bufferLength = length(buffer);
+        for (int i = 0; i < bufferLength; i++)
+            sentence[counter++] = buffer[i];
+    }
+    sentence[counter] = '\0';
+
+    // trim extra space
+    trimToExact(sentence, counter);
+    return sentence;
 }
 
 int length(char* str)   {
@@ -57,12 +112,8 @@ char* extractWord(char* sentence, int startIndex, int& endIndex)    {
     endIndex = i;
 
     // trim to exact
-    char* exactSize = new char [counter + 1];
-    for (int j = 0; j <= counter; j++)
-        exactSize[j] = extractedWord[j];
-    delete[] extractedWord;
-    extractedWord = exactSize;
-    return extractedWord;
+    trimToExact(sentence, counter);
+    return sentence;
 }
 
 bool compare(char* str1, char* str2)    {
@@ -93,8 +144,8 @@ void writeBack(char*& sentence, char* targetWord, char* condensedWord,
                         newSentence[j++] = sentence[i];
 
                     for (int i = 0; i < lengthCondensedWord; i++)
-
                         newSentence[j++] = condensedWord[i];
+
                     for (int i = end; i < lengthSentence; i++)
                         newSentence[j++] = sentence[i];
 
@@ -146,11 +197,7 @@ char* condense(char* word)  {
     condensedWord[realSize] = '\0';
 
     // trim to exactSize
-    char* exactSize = new char [realSize + 1];
-    for (int j = 0; j <= realSize; j++)
-        exactSize[j] = condensedWord[j];
-    delete[] condensedWord;
-    condensedWord = exactSize;
+    trimToExact(condensedWord, counter);
     return condensedWord;
 }
 
