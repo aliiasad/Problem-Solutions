@@ -8,8 +8,7 @@
 
 #include <iostream>
 
-char* getSentence();
-char* getTarget();
+char* getInput();
 int length(char* str);
 char* extractWord(char* sentence, int startIndex, int& endIndex);
 bool compare(char* str1, char* str2);
@@ -20,14 +19,10 @@ void condenseWord(char*& sentence, char* targetWord);
 void trimToExact(char*& sentence, int counter);
 
 int main()  {
-    char* rawSentence = "The word MISSISSIPPI is long";
-    int len = length(rawSentence);
-    char* sentence = new char[len + 1];
-    for (int i = 0; i <= len; i++) {
-        sentence[i] = rawSentence[i];
-    }
-
-    char* word = "MISSISSIPPI";
+    std::cout << "Enter your Sentence (Hit \"Enter\" to Stop): " << std::endl;
+    char* sentence = getInput();
+    std::cout << "Enter your Target Word -- Case Sensitive (Hit \"Enter\" to Stop): " << std::endl;
+    char* word = getInput();
     condenseWord(sentence, word);
     std::cout << sentence;
     return 0;
@@ -41,9 +36,7 @@ void trimToExact(char*& sentence, int counter)  {
     sentence = exactSize;
 }
 
-char* getSentence() {
-    std::cout << "Enter your Sentence (Type \"STOP\" at the end): " << std::endl;
-    char buffer[5001];
+char* getInput() {
     int counter = 0, size = 20;
     char* sentence = new char [size];
     sentence[0] = '\0';
@@ -62,22 +55,10 @@ char* getSentence() {
         }
     };
 
-    while (std::cin >> buffer)    {
-        if (compare(buffer, "STOP"))
-            break;
-
-        // check space and growo once
-        int spaceNeeded = ((counter > 0) ? 1 : 0) + length(buffer) + 1; // counter > 0 means space present
-        ensureCapacity(spaceNeeded);
-
-        // to handle space cases
-        if (counter > 0)
-            sentence[counter++] = ' ';
-        
-        // copy temp into sentence
-        int bufferLength = length(buffer);
-        for (int i = 0; i < bufferLength; i++)
-            sentence[counter++] = buffer[i];
+    char ch;
+    while (std::cin.get(ch) && ch != '\n')  {
+        ensureCapacity(1); // for each character
+        sentence[counter++] = ch;
     }
     sentence[counter] = '\0';
 
@@ -112,8 +93,8 @@ char* extractWord(char* sentence, int startIndex, int& endIndex)    {
     endIndex = i;
 
     // trim to exact
-    trimToExact(sentence, counter);
-    return sentence;
+    trimToExact(extractedWord, counter);
+    return extractedWord;
 }
 
 bool compare(char* str1, char* str2)    {
@@ -197,7 +178,7 @@ char* condense(char* word)  {
     condensedWord[realSize] = '\0';
 
     // trim to exactSize
-    trimToExact(condensedWord, counter);
+    trimToExact(condensedWord, realSize);
     return condensedWord;
 }
 
