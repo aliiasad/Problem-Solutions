@@ -47,11 +47,11 @@ char* getInput() {
             while (counter + spaceNeeded >= size)    {
                 size *= 2;  // product until the word fits in size
             }
-                char* newSentence = new char [size];
-                for (int k = 0; k < counter; k++)
-                    newSentence[k] = sentence[k];
-                delete[] sentence;
-                sentence = newSentence;
+            char* newSentence = new char [size];
+            for (int k = 0; k < counter; k++)
+                newSentence[k] = sentence[k];
+            delete[] sentence;
+            sentence = newSentence;
         }
     };
 
