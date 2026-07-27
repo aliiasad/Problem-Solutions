@@ -6,6 +6,10 @@
 // the solution assumes that data.txt contains nxn data with no 
 // spaces as said in problem statement
 
+// Note that the current solution uses 4x identical loops
+// the next commit/push will use direction arrays to exercise better logic building
+// if you need simpler solution roll back to previous commit
+
 #include <iostream>
 #include <limits>
 #include <fstream>
