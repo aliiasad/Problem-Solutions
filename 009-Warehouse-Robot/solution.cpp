@@ -6,8 +6,10 @@
 // the solution assumes that data.txt contains nxn data with no 
 // spaces as said in problem statement
 
-// Note that the current solution uses 4x identical loops
-// the next commit/push will use direction arrays to exercise better logic building
+// this solution uses direction arrays to showcase better logic building
+// but the time complexity is same as taht of the previous solution 
+// i.e., O(n)
+// the previous commit holds the simpler solution, so you can roll back to see that one
 // if you need simpler solution roll back to previous commit
 
 #include <iostream>
@@ -23,15 +25,13 @@ void scanWareHouse(char** wareHouse, int size, int rRow, int rCol);
 
 int main()  {
     int size = 0, rRow, rCol;
-    char** arr = extractData(size);
-    std::cout << size << std::endl;
-    displayWareHouse(arr, size);
+    char** wareHouse = extractData(size);
+    displayWareHouse(wareHouse, size);
     getRobotCell(size, rRow, rCol);
-    setRobotCell(arr, size, rRow, rCol);
-    displayWareHouse(arr, size);
-    scanWareHouse(arr, size, rRow, rCol);
-    deleteWareHouse(arr, size);
-
+    setRobotCell(wareHouse, size, rRow, rCol);
+    displayWareHouse(wareHouse, size);
+    scanWareHouse(wareHouse, size, rRow, rCol);
+    deleteWareHouse(wareHouse, size);
     return 0;
 }
 
@@ -57,7 +57,7 @@ char** extractData(int& size) {
     inputFile.clear();
     inputFile.seekg(0, std::ios::beg);
     
-    // extract data from file into array
+    // extract data from file into wareHouseay
     for (int i = 0; i < size; i++)  {
         for (int j = 0; j < size; j++)  {
             inputFile.get(wareHouse[i][j]);
@@ -117,47 +117,27 @@ void setRobotCell(char**& wareHouse, int size, int& rRow, int& rCol) {
 }
 
 void scanWareHouse(char** wareHouse, int size, int rRow, int rCol)  {
-    int front = 0, left = 0, right = 0, back = 0;
-    int i = 0;
-    bool flagF = false, flagB = false, flagL = false, flagR = false;
+    // creating lambda to process distance
+    auto processDirections = [&](int dirRow, int dirCol) {
+        int distance = 0;
+        int row = rRow + dirRow;
+        int col = rCol + dirCol;
+        while (row >= 0 && row < size && col < size && col >= 0)    {
+            distance++;
+            if (wareHouse[row][col] == 'b')
+                return distance;
+            row += dirRow;
+            col += dirCol;
+        }
+        return -1;
+    };
 
-    i = rRow - 1;
-    while (i >= 0 && !flagF)    {
-        front++;
-        if (wareHouse[i][rCol] == 'b')
-            flagF = true;
-        i--;
-    }
-    i = rCol - 1;
-    while (i >= 0 && !flagL)    {
-        left++;
-        if (wareHouse[rRow][i] == 'b')
-            flagL = true;
-        i--;
-    }
-    i = rRow + 1;
-    while (i < size && !flagB)  {
-        back++;
-        if (wareHouse[i][rCol] == 'b')
-            flagB = true;
-        i++;
-    }
-    i = rCol + 1;
-    while (i < size && !flagR)  {
-        right++;
-        if (wareHouse[rRow][i] == 'b')
-            flagR = true;
-        i++;
-    }
+    const char* labels[4] = {"Front", "Right", "Back", "Left"};
+    int dirRow[4] = {-1, 0, 1, 0};
+    int dirCol[4] = {0, 1, 0, -1};
 
-    std::cout << "-1 means No Box in Sight in this Direction!" << std::endl;
-    (flagF == true) ? std::cout << "Front: " << front : std::cout << "Front: " << -1;
-    std::cout << std::endl;
-    (flagR == true) ? std::cout << "Right: " << right : std::cout << "Right: " << -1;
-    std::cout << std::endl;
-    (flagB == true) ? std::cout << "Back: " << back : std::cout << "Back: " << -1;
-    std::cout << std::endl;
-    (flagL == true) ? std::cout << "Left: " << left : std::cout << "Left: " << -1;
-    std::cout << std::endl;
+    for (int i = 0; i < 4; i++) {
+        std::cout << labels[i] << ": " << processDirections(dirRow[i], dirCol[i]) << std::endl;
+    }
     return;
 }
