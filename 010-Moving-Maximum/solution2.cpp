@@ -71,7 +71,7 @@ void getWindowSize(int& winSize, int size)    {
 
 int* movingMaximum(int* input, int sizeInput, int sizeWindow)  {
     int* window = new int [sizeInput - sizeWindow + 1];
-    int dq[sizeInput];
+    int* dq = new int [sizeInput];
     int front = 0, back = 0;
     int k = 0;
 
@@ -86,6 +86,7 @@ int* movingMaximum(int* input, int sizeInput, int sizeWindow)  {
         if (i >= sizeWindow - 1)
             window[k++] = input[dq[front]];
     }
+    delete[] dq;
     return window;
 }
 
