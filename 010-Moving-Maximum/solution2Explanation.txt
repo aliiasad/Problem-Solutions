@@ -1,0 +1,118 @@
+this solution uses double ended queue concept but without 
+automatic/predefined operations like push and pop
+
+however these will be explained thoroughly and their replacements 
+too
+
+firstly, this method is called monotonic decreasing double ended queue
+because it makes a queue of indices holding values in decreasing order
+from the original dataset
+
+Intuition:
+we will try to iterate through the dataset only once from start to end
+and eliminate the elements that can never be max
+it means when we move from one element to another and the previous one
+might be a part of next window too, we check if we have a greater number 
+if yes, we ignore the previous number and so on
+
+in this way we will always have the greater number for the window at 
+the front and hence it is called decreasing order deque
+
+i know you didn't understand so lets explain it with some code and theory
+
+first we should have a queue that can be modified from both front and 
+back so we do not use a stack as it only be modified from top in O(1) time
+
+we create a deque but here we will simply use a linear array to replicate
+
+now firstly we have to check if there is any element in the queue
+
+**important** we only store indices from input in dq as there might be 
+multiple same numbers, we can only distinguish their presence from idx
+
+if there is no element in queue, we simply add one with no conditions
+but if there is, then we have to check two things
+
+firstly , we check if queue is non empty otherwise, above step
+
+secondly, if that number is greater or equal to next coming number
+then we know, it can never be max, so as we said we ignore it
+
+dont worry, i'll tell later how to ignore
+
+we do same process until some smaller number fails this check
+that would mean know the pre existing number can become max
+so we simply add that smaller number in queue
+
+i'll tell later how to add to queue
+
+now, you have added a value in queue so the window size has increased
+we check if any element has fallen out of the window so we can ignore
+that too
+
+if not, repeat
+
+finally, we know that the decreasing logic would get us a max for current 
+window at front before it falls out and is ignored se we must save its value
+
+this process is done everytime after the first window is complete
+because after first completion, we have a new window at each +1 
+
+we put the value in output array and increment
+
+i hope 20-30% scenario is clear.. the rest will be from the code and
+related 
+
+now lets explain how to ignore and add
+
+we use push_back(), pop_back() and pop_front() but manually
+
+when we push_back(), we simply add an element at the back of queue
+when we pop_back(), we ignore the element at back of queue
+when we pop_front(), we simply ignore the element out of window
+
+push_back() == dq[back++] = val; we add new val and move forward
+pop_back() == back--; // we go back and rewrite/overwrite
+pop_front() == front++;  meaning we move ahead ignoring fallen element
+
+#include <iostream>
+
+void movingMaximum(int* input, int sizeInput, int* output, int* sizeWindow);
+
+int main()  {
+    return 0;
+}
+
+void movingMaximum(int* input, int sizeInput, int* output, int sizeWindow) {
+    first we create manual pointers for front and back of our queue
+    along with our queue
+    int dq[sizeInput];
+    int front = 0, back = 0;
+    int k = 0;
+
+    first we write a loop to iterate through out dataset
+    for (int i = 0; i < sizeInput; i++) {
+        then we use the first check to know if queue is non empty
+        and the element at the back is smaller than previous otherwise
+        we pop until its smaller
+        while (front != back && input[dq[back - 1]] <= input[i])    
+            back--; // if coming elem is greater, it eats the prevs chance
+                    to become max so we can simply ignore it
+        
+        now if that one is false, we simple push new element to back of queue
+        dq[back++] = i; // remember we are working with indices
+
+        now we check if some element has fallen out of window from front
+        if yes then we pop_front()
+        the below codition means if your inx in dq is 2 and i = 5 - win 2 = 3
+        your window is from 3 to 5 where 3 isnt included, so 2 falls out
+        if (dq[front] <= i - sizeWindow)
+            front++;    // simple pop front
+        
+        finally we check if the window is complete
+        after first completion, it will get complete for all iterations
+        if (i >= sizeWindow - 1)
+            output[k++] = input[dq[front]]; // simple extraction from input at 
+                                            index from dq
+    }
+}
