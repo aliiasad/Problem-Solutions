@@ -54,7 +54,6 @@ char* getInput() {
             sentence = newSentence;
         }
     };
-
     char ch;
     while (std::cin.get(ch) && ch != '\n')  {
         ensureCapacity(1); // for each character
