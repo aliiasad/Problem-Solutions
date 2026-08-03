@@ -8,13 +8,14 @@ int length(char* str);
 // functions for balanced matrix
 bool isSquareMatrix(char** input, int size);
 bool isSumEqual(char** input, int size);
+bool isDiagonalSumEqual(char** input, int size);
 
 int main()  {
     int rows = 0;
     char** input = getInput(rows);
     displayInput(input, rows);
     deleteInput(input, rows);
-    (isSumEqual(input, rows)) ? std::cout << "T" : std::cout << "F";
+    (isDiagonalSumEqual(input, rows)) ? std::cout << "T" : std::cout << "F";
     return 0;
 }
 
@@ -132,5 +133,17 @@ bool isSumEqual(char** input, int size) {
         if (rSum != cSum) 
             return false;
     }
+    return true;
+}
+
+bool isDiagonalSumEqual(char** input, int size) {
+    int pj = 0, npj = size - 1;
+    int pSum = 0, npSum = 0;
+    for (int i = 0; i < size; i++)  {
+        pSum += input[i][pj++];
+        npSum += input[i][npj--];
+    }
+    if (pSum != npSum) 
+        return false;
     return true;
 }
