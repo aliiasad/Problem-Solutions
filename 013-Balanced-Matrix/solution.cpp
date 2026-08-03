@@ -1,6 +1,7 @@
 #include <iostream>
 
 char** getInput(int& rows);
+void deleteInput(char** input, int rows);
 
 int main()  {
     int rows = 0;
@@ -79,4 +80,11 @@ char** getInput(int& rows)   {
         matrix[rows++] = word;
     }
     return matrix;
+}
+
+void deleteInput(char** input, int rows)    {
+    for (int i = 0; i < rows; i++)
+        delete[] input[i];
+    delete[] input;
+    return;
 }
