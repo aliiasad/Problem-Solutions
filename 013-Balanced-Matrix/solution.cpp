@@ -5,6 +5,9 @@ void displayInput(char** input, int size);
 void deleteInput(char** input, int rows);
 int length(char* str);
 
+// functions for balanced matrix
+bool isSquareMatrix(char** input, int size);
+
 int main()  {
     int rows = 0;
     char** input = getInput(rows);
@@ -108,4 +111,11 @@ int length(char* str)   {
     while (str[i] != '\0')
         i++;
     return i;
+}
+
+bool isSquareMatrix(char** input, int size) {
+    for (int i = 0; i < size; i++)
+        if (size != length(input[i]))
+            return false;
+    return true;
 }
