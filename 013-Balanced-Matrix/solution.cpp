@@ -9,13 +9,14 @@ int length(char* str);
 bool isSquareMatrix(char** input, int size);
 bool isSumEqual(char** input, int size);
 bool isDiagonalSumEqual(char** input, int size);
+bool isSumEven(char** input, int size);
 
 int main()  {
     int rows = 0;
     char** input = getInput(rows);
     displayInput(input, rows);
     deleteInput(input, rows);
-    (isDiagonalSumEqual(input, rows)) ? std::cout << "T" : std::cout << "F";
+    (isSumEqual(input, rows)) ? std::cout << "T" : std::cout << "F";
     return 0;
 }
 
@@ -144,6 +145,17 @@ bool isDiagonalSumEqual(char** input, int size) {
         npSum += input[i][npj--];
     }
     if (pSum != npSum) 
+        return false;
+    return true;
+}
+
+bool isSumEven(char** input, int size)  {
+    int sum = 0;
+    for (int i = 0; i < size; i++)  {
+        for (int j = 0; j < size; j++)  // max(j) is size since we confirmed its square
+        sum += input[i][j];
+    }
+    if (sum & 1)
         return false;
     return true;
 }
