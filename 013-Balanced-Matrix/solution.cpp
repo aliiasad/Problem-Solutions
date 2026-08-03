@@ -11,12 +11,16 @@ bool isSumEqual(char** input, int size);
 bool isDiagonalSumEqual(char** input, int size);
 bool isSumEven(char** input, int size);
 
+// final function
+bool balancedMatrix(char** input, int size);
+
 int main()  {
     int rows = 0;
     char** input = getInput(rows);
+    std::cout << "Your Input : " << std::endl;
     displayInput(input, rows);
+    (balancedMatrix(input, rows)) ? std::cout << "True" : std::cout << "False";
     deleteInput(input, rows);
-    (isSumEqual(input, rows)) ? std::cout << "T" : std::cout << "F";
     return 0;
 }
 
@@ -126,10 +130,10 @@ bool isSquareMatrix(char** input, int size) {
 
 bool isSumEqual(char** input, int size) {
     for (int i = 0; i < size; i++)  {
-        int rSum = 0, cSum = 0;
-        for (int j = 0; j < length(input[i]); j++)  {
-            rSum += input[i][j];
-            cSum += input[j][i];
+        int rSum = 0, cSum = 0, len = length(input[i]);
+        for (int j = 0; j < len; j++)  {
+            rSum += input[i][j] - '0';
+            cSum += input[j][i] - '0';
         }
         if (rSum != cSum) 
             return false;
@@ -141,8 +145,8 @@ bool isDiagonalSumEqual(char** input, int size) {
     int pj = 0, npj = size - 1;
     int pSum = 0, npSum = 0;
     for (int i = 0; i < size; i++)  {
-        pSum += input[i][pj++];
-        npSum += input[i][npj--];
+        pSum += input[i][pj++] - '0';
+        npSum += input[i][npj--] - '0';
     }
     if (pSum != npSum) 
         return false;
@@ -153,9 +157,16 @@ bool isSumEven(char** input, int size)  {
     int sum = 0;
     for (int i = 0; i < size; i++)  {
         for (int j = 0; j < size; j++)  // max(j) is size since we confirmed its square
-        sum += input[i][j];
+        sum += input[i][j] - '0';
     }
     if (sum & 1)
         return false;
     return true;
+}
+
+bool balancedMatrix(char** input, int size) {
+    if (isSquareMatrix(input, size) && isSumEqual(input, size) &&
+        isDiagonalSumEqual(input, size) && isSumEven(input, size))
+            return true;
+    return false;
 }
