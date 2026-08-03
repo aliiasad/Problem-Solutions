@@ -1,11 +1,15 @@
 #include <iostream>
 
 char** getInput(int& rows);
+void displayInput(char** input, int size);
 void deleteInput(char** input, int rows);
+int length(char* str);
 
 int main()  {
     int rows = 0;
     char** input = getInput(rows);
+    displayInput(input, rows);
+    deleteInput(input, rows);
     return 0;
 }
 
@@ -87,4 +91,21 @@ void deleteInput(char** input, int rows)    {
         delete[] input[i];
     delete[] input;
     return;
+}
+
+void displayInput(char** input, int size)   {
+    for (int i = 0; i < size; i++)  {
+        for (int j = 0; j < length(input[i]); j++)
+            std::cout << input[i][j] << " ";
+        std::cout << std::endl;
+    }
+        
+    return;
+}
+
+int length(char* str)   {
+    int i = 0;
+    while (str[i] != '\0')
+        i++;
+    return i;
 }
